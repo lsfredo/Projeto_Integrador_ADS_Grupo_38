@@ -5,7 +5,7 @@
 ---
 
 ## 📌 Tema do Projeto
-*A definir pelo grupo.*
+*A definir.*
 
 ---
 
