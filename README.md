@@ -5,7 +5,7 @@
 ---
 
 ## 📌 Tema do Projeto
-**Desenvolvimento Low Code aplicado à Ciência de Dados utilizando o Superstore Sales Dataset (Kaggle).**  
+**Desenvolvimento Low Code aplicado à Ciência de Dados utilizando o Kaggle.**  
 O conjunto de dados escolhido é público e disponibilizado no Kaggle, uma das maiores plataformas de datasets voltados para Ciência de Dados e Machine Learning.
 
 ---
