@@ -1,12 +1,16 @@
 # Projeto_Integrador_ADS_Grupo_38
-# 📊 Desenvolvimento Low Code em Ciência de Dados
-## Etapa 1 — Planejamento e Estruturação
+# 📊 Projeto Integrador: Desenvolvimento Low Code em Ciência de Dados
+## Etapa 1 — Planejamento Inicial
 
 ---
 
 ## 📌 Tema do Projeto
-**Desenvolvimento Low Code aplicado à Ciência de Dados utilizando o Kaggle.**  
-O conjunto de dados escolhido é público e disponibilizado no Kaggle, uma das maiores plataformas de datasets voltados para Ciência de Dados e Machine Learning.
+*A definir pelo grupo.*
+
+---
+
+## 🗄️ Base de Dados
+*A definir — será escolhida entre bases públicas disponíveis no Kaggle.*
 
 ---
 
@@ -19,3 +23,19 @@ O conjunto de dados escolhido é público e disponibilizado no Kaggle, uma das m
 - TAINA SILVA CONCEICAO  
 - VITORIA SILVA DE LIMA  
 
+---
+
+## 🎯 Objetivo da Análise
+*Será definido após a escolha do tema e da base de dados.*
+
+---
+
+## 🛠️ Planejamento das Tarefas  
+*A definir após reunião com todos os colaboradores.*
+
+---
+
+## 📊 Ideia Inicial do Dashboard  
+*Será definida após escolha do tema e objetivos da análise.*
+
+---
