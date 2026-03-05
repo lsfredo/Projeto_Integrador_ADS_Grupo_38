@@ -1,5 +1,5 @@
 # Projeto_Integrador_ADS_Grupo_38
-# 📊 Projeto Integrador: Desenvolvimento Low Code em Ciência de Dados
+# 📊 Desenvolvimento Low Code em Ciência de Dados
 ## Etapa 1 — Planejamento Inicial
 
 ---
