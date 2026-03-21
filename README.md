@@ -5,12 +5,15 @@
 ---
 
 ## 📌 Tema do Projeto
-*A definir.*
+Comportamento de Usuários no Spotify — Análise Low Code.
+
 
 ---
 
 ## 🗄️ Base de Dados
-*A definir — será escolhida entre bases públicas disponíveis no Kaggle.*
+**Spotify User Behavior and Pattern — Kaggle**
+- Link do dataset: https://www.kaggle.com/datasets/sahilislam007/spotify-user-behavior-and-pattern
+
 
 ---
 
@@ -26,16 +29,54 @@
 ---
 
 ## 🎯 Objetivo da Análise
-*Será definido após a escolha do tema e da base de dados.*
+O objetivo do projeto é analisar o comportamento de usuários do Spotify utilizando
+ferramentas Low Code, avaliando métricas como engajamento (horas de escuta, skips,
+playlists), tipos de assinatura, dispositivos utilizados, gêneros favoritos, inatividade e
+conversão de anúncios.
+A partir dos dados, será desenvolvido um dashboard interativo, que permitirá visualizar
+padrões de uso, analisar retenção e apoiar decisões relacionadas à jornada do usuário.
 
 ---
 
 ## 🛠️ Planejamento das Tarefas  
-*A definir após reunião com todos os colaboradores.*
+### Organização e Dados
+- **LEANDRO SACOMANI FREDO** — Criar e organizar o repositório no GitHub; adicionar
+colaboradores; configurar `.gitignore`.
+
+- **CAIO ALVES GOMES** — Estruturar o projeto (pastas `/data`, `/notebooks`, `/scripts`,
+`/dashboard`) e inserir a base bruta do Kaggle.
+
+### Qualidade, Transformações e EDA
+- **LUIZ GUSTAVO BARBOSA** — Tratar nulos/duplicatas; padronizar tipos; normalizar
+categorias como planos, dispositivos e gêneros.
+- **LUCAS RIOS AYRES** — Criar transformações: coortes por `signup_date`, faixas de
+engajamento, taxa de conversão de anúncios e indicadores de inatividade (`months_inactive`,
+`inactive_3_months_flag`).
+- **LUIS FELIPE BATISTA HOLANDA** — Realizar a EDA: estatísticas, gráficos exploratórios,
+correlações e validação de consistência dos dados.
+### Dashboard e Documentação
+- **TAINA SILVA CONCEICAO** — Criar o dashboard Low Code (Power BI / Looker Studio);
+montar KPIs e visualizações.
+- **VITORIA SILVA DE LIMA** — Documentar todo o projeto; atualizar o README; descrever
+transformações, decisões e evolução do dashboard.
 
 ---
 
 ## 📊 Ideia Inicial do Dashboard  
-*Será definida após escolha do tema e objetivos da análise.*
+A ideia inicial do dashboard é oferecer uma visão clara e estratégica do comportamento dos usuários na plataforma, combinando métricas de engajamento, conversão e preferências. A proposta é permitir que, de forma visual e intuitiva, seja possível identificar padrões de uso e compreender melhor como diferentes perfis de usuários interagem com o serviço.
+
+### KPIs
+- **Usuários ativos**
+- **% de usuários inativos (3 meses)**
+- **Horas médias de escuta por semana**
+- **Taxa de conversão de anúncios** (ad_interaction → ad_conversion_to_subscription)
+- **Distribuição de tipos de assinatura** (Free, Premium Individual, Duo, Family, Student)
+### Visualizações Propostas
+- **Barras**: Quantidade de usuários por tipo de assinatura e país.
+- **Linha por coortes**: Análise temporal por `signup_date` (retenção simples).
+- **Heatmap**: Dispositivo × taxa de conversão de anúncios.
+- **Barras empilhadas**: Gêneros favoritos por plano.
+- **Dispersão**: `avg_skips_per_day` × `avg_listening_hours_per_week`.
+- **Funil**: `ad_interaction` → `ad_conversion_to_subscription`.
 
 ---
