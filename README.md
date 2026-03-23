@@ -62,6 +62,25 @@ transformações, decisões e evolução do dashboard.
 
 ---
 
+## 📅 Cronograma de Execução
+A divisão do projeto será feita em 4 fases principais, seguindo a ordem de tratamento dos dados.
+
+### **Fase 1: Configuração e Infraestrutura (Início imediato)**
+  Leandro e Caio: Disponibilizar o ambiente e estrutura de massas.
+
+### **Fase 2: Pipeline de Dados (Tratamento e Engenharia)**
+  Luiz Gustavo: Entregar a base limpa para o Lucas.\
+  Lucas Rios: Aplicar as transformações complexas (coortes e bandeiras de inatividade).
+
+### **Fase 3: Exploração e Inteligência (EDA)**
+  Luis Felipe: Analisar a base transformada para encontrar padrões (Ex.: Por que os usuários ficam inativos?).
+
+### **Fase 4: Visualização e Entrega Final**
+  Tainá Silva: Desenvolvedora do dashboard final com base nos KPIs validados na fase anterior.\
+  Vitória: Finalizar a documentação, descrevendo a evolução do dashboard e documentando cada fase anterior.
+
+---
+
 ## 📊 Ideia Inicial do Dashboard  
 A ideia inicial do dashboard é oferecer uma visão clara e estratégica do comportamento dos usuários na plataforma, combinando métricas de engajamento, conversão e preferências. A proposta é permitir que, de forma visual e intuitiva, seja possível identificar padrões de uso e compreender melhor como diferentes perfis de usuários interagem com o serviço.
 
