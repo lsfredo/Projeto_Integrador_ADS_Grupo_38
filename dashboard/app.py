@@ -4,12 +4,11 @@ import pandas as pd
 st.set_page_config(page_title="Dashboard Spotify", layout="wide")
 st.title("🎧 Dashboard Spotify")
 
-# Agora o dashboard usa a base TRATADA
+# agora usando a base tratada
 df = pd.read_csv("data/spotify_tratado.csv")
 
-# Checagens rápidas (prova que carregou certo)
-st.caption("Prévia da base tratada")
+# diagnóstico para descobrir as colunas
 st.write("Linhas x Colunas:", df.shape)
-st.write(df.head())
 st.write("Colunas:", list(df.columns))
+st.write(df.head())
 
