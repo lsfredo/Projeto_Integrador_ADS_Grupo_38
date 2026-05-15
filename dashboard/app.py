@@ -105,6 +105,34 @@ with col2:
 
 # Graficos de distribuição de assinaturas
 st.divider()
+
+# ✅ NOVO GRÁFICO (README): Quantidade de usuários por país
+st.subheader("🌍 Quantidade de usuários por país")
+
+qtd_paises = df_filtrado["country"].dropna().nunique()
+
+# Versão robusta: se houver menos de 5 países no recorte filtrado,
+# o slider se ajusta para não ficar incoerente.
+min_slider = 1 if qtd_paises < 5 else 5
+max_slider = max(1, qtd_paises)
+valor_padrao = min(15, max_slider)
+
+n_exibir = st.slider(
+    "Quantidade de países exibidos",
+    min_value=min_slider,
+    max_value=max_slider,
+    value=valor_padrao
+)
+
+usuarios_por_pais = (
+    df_filtrado.groupby("country")["user_id"]
+    .nunique()
+    .sort_values(ascending=False)
+    .head(n_exibir)
+)
+
+st.bar_chart(usuarios_por_pais)
+st.caption("Mostra usuários únicos por país (respeita o filtro de assinatura).")
 st.subheader("📊 Distribuição por Idade")
 grafico_idade = df_filtrado.groupby("age")["avg_listening_hours_per_week"].mean()
 st.bar_chart(grafico_idade)
