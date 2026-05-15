@@ -8,7 +8,7 @@ st.title("🎧 Dashboard Spotify")
 # =========================
 # 1) Carregar base tratada
 # =========================
-df = pd.read_csv("../data/spotify_tratado.csv")
+df = pd.read_csv("data/spotify_tratado.csv")
 
 # =========================
 # 2) Garantir tipos (robusto)
