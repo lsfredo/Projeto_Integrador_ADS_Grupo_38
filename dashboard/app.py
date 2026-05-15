@@ -36,22 +36,42 @@ for c in num_cols:
     df[c] = pd.to_numeric(df[c], errors="coerce")
 
 # =========================
-# 3) KPIs
+# 3) Filtros Interativos (Barra Lateral)
 # =========================
-total_users = df["user_id"].nunique()
 
-premium_pct = (df["subscription_type"].astype(str).str.lower() != "free").mean() * 100
+st.sidebar.header("🔍Filtrar Assinaturas")
 
-inactive_pct = df["inactive_3_months_flag"].mean() * 100 if df["inactive_3_months_flag"].notna().any() else 0
+opcoes_assinaturas = ["Todos"] + list (df["subscription_type"].unique())
+filtro_assinatura = st.sidebar.selectbox("Tipo de Assinatura", opcoes_assinaturas)
 
-avg_hours = df["avg_listening_hours_per_week"].mean()
-avg_skips = df["avg_skips_per_day"].mean()
-avg_rating = df["music_suggestion_rating_1_to_5"].mean()
+# =========================
+# 4) Aplicação dos Filtros (Efeito Cascata)
+# =========================
+
+if filtro_assinatura == "Todos":
+    df_filtrado = df
+else:
+    df_filtrado = df[df["subscription_type"] == filtro_assinatura]
+
+# =========================
+# 5) KPIs (Agora usando o df_filtrado)
+# =========================
+
+total_users = df_filtrado["user_id"].nunique()
+
+premium_pct = (df_filtrado["subscription_type"].astype(str).str.lower() != "free").mean() * 100
+
+inactive_pct = df_filtrado["inactive_3_months_flag"].mean() * 100 if df_filtrado["inactive_3_months_flag"].notna().any() else 0
+
+avg_hours = df_filtrado["avg_listening_hours_per_week"].mean()
+avg_skips = df_filtrado["avg_skips_per_day"].mean()
+avg_rating = df_filtrado["music_suggestion_rating_1_to_5"].mean()
 
 # Conversão de anúncios (entre quem interagiu, quantos converteram)
-interagiram = df["ad_interaction"].sum() if df["ad_interaction"].notna().any() else 0
-converteram = df["ad_conversion_to_subscription"].sum() if df["ad_conversion_to_subscription"].notna().any() else 0
+interagiram = df_filtrado["ad_interaction"].sum() if df["ad_interaction"].notna().any() else 0
+converteram = df_filtrado["ad_conversion_to_subscription"].sum() if df["ad_conversion_to_subscription"].notna().any() else 0
 ad_conv_rate = (converteram / interagiram * 100) if interagiram else 0
+
 
 # Exibir KPIs
 c1, c2, c3, c4, c5, c6 = st.columns(6)
@@ -63,4 +83,8 @@ c5.metric("⏭️ Skips/dia (média)", f"{avg_skips:.2f}")
 c6.metric("📢 Conv. Anúncio (%)", f"{ad_conv_rate:.1f}%")
 
 st.divider()
+st.subheader("📊Distribuição por Idade")
+grafico_idade = df_filtrado.groupby("age")["avg_listening_hours_per_week"].mean()
+st.bar_chart(grafico_idade)
+
 st.caption("✅ KPIs prontos.")
