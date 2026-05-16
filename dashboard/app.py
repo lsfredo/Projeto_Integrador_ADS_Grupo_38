@@ -106,13 +106,11 @@ with col2:
 # Graficos de distribuição de assinaturas
 st.divider()
 
-# ✅ NOVO GRÁFICO (README): Quantidade de usuários por país
+# ✅ GRÁFICO DE PAÍS
 st.subheader("🌍 Quantidade de usuários por país")
 
 qtd_paises = df_filtrado["country"].dropna().nunique()
 
-# Versão robusta: se houver menos de 5 países no recorte filtrado,
-# o slider se ajusta para não ficar incoerente.
 min_slider = 1 if qtd_paises < 5 else 5
 max_slider = max(1, qtd_paises)
 valor_padrao = min(15, max_slider)
@@ -132,7 +130,52 @@ usuarios_por_pais = (
 )
 
 st.bar_chart(usuarios_por_pais)
+
 st.caption("Mostra usuários únicos por país (respeita o filtro de assinatura).")
+
+st.divider()
+
+# ✅ HEATMAP: Conversão de anúncios por dispositivo
+st.subheader("🔥 Conversão de anúncios por dispositivo (%)")
+
+df_temp = df_filtrado.copy()
+
+conversao_por_device = (
+    df_temp.groupby("primary_device")
+    .agg(
+        interacoes=("ad_interaction", "sum"),
+        conversoes=("ad_conversion_to_subscription", "sum")
+    )
+)
+
+# 👉 cálculo da taxa em % + arredondamento
+conversao_por_device["taxa_conversao"] = (
+    conversao_por_device["conversoes"]
+    / conversao_por_device["interacoes"]
+    * 100
+).round(2)
+
+# 👉 evita erros
+conversao_por_device = (
+    conversao_por_device
+    .replace([float("inf"), -float("inf")], 0)
+    .fillna(0)
+)
+
+# 👉 criação do heatmap
+fig = px.imshow(
+    [conversao_por_device["taxa_conversao"].values],
+    labels=dict(x="Dispositivo", color="Taxa (%)"),
+    x=conversao_por_device.index,
+    text_auto=True,
+    aspect="auto"
+)
+
+st.plotly_chart(fig, use_container_width=True)
+
+st.caption("Taxa de conversão de anúncios (%) por dispositivo.")
+
+
 st.subheader("📊 Distribuição por Idade")
 grafico_idade = df_filtrado.groupby("age")["avg_listening_hours_per_week"].mean()
 st.bar_chart(grafico_idade)
