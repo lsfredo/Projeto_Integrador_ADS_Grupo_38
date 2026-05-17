@@ -175,6 +175,49 @@ st.plotly_chart(fig, use_container_width=True)
 
 st.caption("Taxa de conversão de anúncios (%) por dispositivo.")
 
+st.divider()
+
+# ✅ Funil de conversão de usuários
+st.subheader("🎯 Funil de conversão de usuários")
+
+df_temp = df_filtrado.copy()
+
+# Totais por etapa
+total = len(df_temp)
+interagiram = df_temp["ad_interaction"].sum()
+converteram = df_temp["ad_conversion_to_subscription"].sum()
+
+# Garantir valores inteiros
+interagiram = int(interagiram) if pd.notna(interagiram) else 0
+converteram = int(converteram) if pd.notna(converteram) else 0
+
+# Estrutura do funil
+funil = pd.DataFrame({
+    "Etapa": [
+        "Total de usuários",
+        "Interagiram com anúncio",
+        "Converteram"
+    ],
+    "Quantidade": [total, interagiram, converteram]
+})
+
+# Gráfico
+st.bar_chart(funil.set_index("Etapa"))
+
+# Cálculo das taxas
+if total > 0:
+    taxa_interacao = (interagiram / total) * 100
+    taxa_conversao = (converteram / interagiram) * 100 if interagiram else 0
+
+    col1, col2 = st.columns(2)
+
+    with col1:
+        st.metric("Taxa de interação", f"{taxa_interacao:.2f}%")
+
+    with col2:
+        st.metric("Taxa de conversão", f"{taxa_conversao:.2f}%")
+
+st.caption("Jornada dos usuários até a conversão.")
 
 st.subheader("📊 Distribuição por Idade")
 grafico_idade = df_filtrado.groupby("age")["avg_listening_hours_per_week"].mean()
