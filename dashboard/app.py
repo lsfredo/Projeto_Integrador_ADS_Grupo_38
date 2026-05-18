@@ -201,6 +201,74 @@ st.caption("Taxa de conversão de anúncios (%) por dispositivo.")
 
 st.divider()
 
+# ✅ Barras empilhadas: Gêneros favoritos por plano
+st.subheader("🎵 Gêneros favoritos por plano (barras empilhadas)")
+
+# Cópia para evitar modificar df_filtrado
+df_temp = df_filtrado.copy()
+
+# (Opcional) Limitar quantidade de gêneros exibidos para ficar legível
+top_n_generos = st.slider("Top N gêneros exibidos", min_value=5, max_value=20, value=10)
+
+top_generos = (
+    df_temp["favorite_genre"]
+    .value_counts()
+    .head(top_n_generos)
+    .index
+)
+
+df_temp["favorite_genre_plot"] = df_temp["favorite_genre"].where(
+    df_temp["favorite_genre"].isin(top_generos),
+    other="Outros"
+)
+
+# Tabela de contagem: plano x gênero
+tabela = (
+    df_temp.groupby(["subscription_type", "favorite_genre_plot"])
+    .size()
+    .reset_index(name="qtd")
+)
+
+# Alternar entre contagem absoluta e percentual
+modo = st.radio("Exibir como:", ["Contagem", "Percentual (%)"], horizontal=True)
+
+if modo == "Percentual (%)":
+    total_por_plano = tabela.groupby("subscription_type")["qtd"].transform("sum")
+    tabela["valor"] = (tabela["qtd"] / total_por_plano * 100).round(2)
+    y_label = "Percentual (%)"
+else:
+    tabela["valor"] = tabela["qtd"]
+    y_label = "Quantidade"
+
+# Gráfico empilhado com Plotly
+fig = px.bar(
+    tabela,
+    x="subscription_type",
+    y="valor",
+    color="favorite_genre_plot",
+    barmode="stack",
+    labels={
+        "subscription_type": "Plano",
+        "valor": y_label,
+        "favorite_genre_plot": "Gênero"
+    },
+    title="Distribuição de gêneros favoritos por tipo de assinatura"
+)
+
+fig.update_layout(
+    legend_title_text="Gênero",
+    xaxis_title="Plano",
+    yaxis_title=y_label
+)
+
+st.plotly_chart(fig, use_container_width=True)
+
+st.caption("Barras empilhadas mostrando a distribuição de gêneros favoritos por plano. O filtro de assinatura afeta a amostra exibida.")
+
+st.caption("Obs.: ao filtrar um plano específico, o gráfico mostra apenas o plano selecionado.")
+
+st.divider()
+
 # ✅ Funil de conversão de usuários
 st.subheader("🎯 Funil de conversão de usuários")
 
