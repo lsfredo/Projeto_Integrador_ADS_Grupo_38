@@ -269,6 +269,53 @@ st.caption("Obs.: ao filtrar um plano específico, o gráfico mostra apenas o pl
 
 st.divider()
 
+# ✅ Dispersão(Ploty)
+st.subheader("📈 Dispersão: Skips/dia × Horas/semana")
+
+# Seleciona colunas e remove nulos
+df_scatter = df_filtrado[
+    ["avg_skips_per_day", "avg_listening_hours_per_week", "subscription_type"]
+].dropna()
+
+# Controles em um expander para não poluir a tela
+with st.expander("⚙️ Ajustes do gráfico (limites para melhorar a leitura)", expanded=False):
+    max_skips = st.slider("Limite máximo de skips/dia", min_value=10, max_value=200, value=100, step=5)
+    max_horas = st.slider("Limite máximo de horas/semana", min_value=5, max_value=120, value=60, step=5)
+
+# Aplica limites (reduz outliers e melhora visual)
+df_scatter = df_scatter[
+    (df_scatter["avg_skips_per_day"] <= max_skips) &
+    (df_scatter["avg_listening_hours_per_week"] <= max_horas)
+]
+
+# Gráfico de dispersão
+fig = px.scatter(
+    df_scatter,
+    x="avg_skips_per_day",
+    y="avg_listening_hours_per_week",
+    color="subscription_type",
+    opacity=0.35,
+    labels={
+        "avg_skips_per_day": "Skips por dia (média)",
+        "avg_listening_hours_per_week": "Horas por semana (média)",
+        "subscription_type": "Plano"
+    },
+    title="Skips/dia vs Horas/semana (por tipo de assinatura)"
+)
+
+# Pequenos ajustes de layout
+fig.update_layout(
+    legend_title_text="Plano",
+    xaxis_title="Skips por dia (média)",
+    yaxis_title="Horas por semana (média)"
+)
+
+st.plotly_chart(fig, use_container_width=True)
+
+st.caption("Dispersão do comportamento de escuta: relação entre skips/dia e horas/semana (respeita o filtro de assinatura).")
+
+st.divider()
+
 # ✅ Funil de conversão de usuários
 st.subheader("🎯 Funil de conversão de usuários")
 
