@@ -135,6 +135,30 @@ st.caption("Mostra usuários únicos por país (respeita o filtro de assinatura)
 
 st.divider()
 
+
+# ✅ Análise temporal de cadastros
+st.subheader("📈 Evolução de novos usuários ao longo do tempo")
+
+df_temp = df_filtrado.copy()
+
+# Criar período mensal (ano-mês)
+df_temp["signup_periodo"] = df_temp["signup_date"].dt.to_period("M").astype(str)
+
+# Contagem de usuários por período (ordenado cronologicamente)
+evolucao = (
+    df_temp["signup_periodo"]
+    .value_counts()
+    .sort_index()
+)
+
+# Gráfico de linha
+st.line_chart(evolucao)
+
+st.caption("Quantidade de novos usuários por mês.")
+
+st.divider()
+
+
 # ✅ HEATMAP: Conversão de anúncios por dispositivo
 st.subheader("🔥 Conversão de anúncios por dispositivo (%)")
 
@@ -218,6 +242,8 @@ if total > 0:
         st.metric("Taxa de conversão", f"{taxa_conversao:.2f}%")
 
 st.caption("Jornada dos usuários até a conversão.")
+
+st.divider()
 
 st.subheader("📊 Distribuição por Idade")
 grafico_idade = df_filtrado.groupby("age")["avg_listening_hours_per_week"].mean()
