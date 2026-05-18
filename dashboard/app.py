@@ -73,10 +73,10 @@ ad_conv_rate = (converteram / interagiram * 100) if interagiram else 0
 c1, c2, c3, c4, c5, c6 = st.columns(6)
 c1.metric("👥 Usuários", f"{total_users:,}".replace(",", "."))
 c2.metric("💳 Premium (%)", f"{premium_pct:.1f}%")
-c3.metric("📉 Inativos 3m (%)", f"{inactive_pct:.1f}%")
-c4.metric("🎧 Horas/sem (média)", f"{avg_hours:.2f}")
+c3.metric("📉 Inativos por 3 meses (%)", f"{inactive_pct:.1f}%")
+c4.metric("🎧 Horas semanais (média)", f"{avg_hours:.2f}")
 c5.metric("⏭️ Skips/dia (média)", f"{avg_skips:.2f}")
-c6.metric("📢 Conv. Anúncio (%)", f"{ad_conv_rate:.1f}%")
+c6.metric("📢 Taxa de conversão de anúncios (%)", f"{ad_conv_rate:.1f}%")
 
 # Graficos de distribuição de assinaturas
 st.divider()
