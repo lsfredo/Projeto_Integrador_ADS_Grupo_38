@@ -101,6 +101,12 @@ A ideia inicial do dashboard é oferecer uma visão clara e estratégica do comp
 ---
 
 
+# Projeto Integrador - Análise de Dados do Spotify (Grupo 38)
+
+Este repositório contém o desenvolvimento do Projeto Integrador, focado na análise do comportamento dos usuários do Spotify, desde a extração e tratamento dos dados até a visualização em um dashboard interativo.
+
+---
+
 ## 📁 Estrutura do Projeto e Configuração Inicial
 
 O projeto foi estruturado para separar a camada de manipulação de dados (ETL) da camada de visualização (Dashboard):
@@ -155,9 +161,8 @@ Durante a evolução do layout, foram aplicadas correções importantes para pre
 
 ---
 
-## 📈 Novas Funcionalidades & Histórico de Commits
+## 📈 Histórico de Commits & Novas Funcionalidades
 
-### 🚀 Evolução e Visualizações Avançadas
 Para enriquecer a experiência visual além dos 3 gráficos nativos e limitados do Streamlit, integramos a biblioteca **Plotly**, permitindo interações dinâmicas e análises visuais profundas.
 
 * **Distribuição de Assinaturas:** Adicionado gráfico focado na divisão dos tipos de plano.
@@ -165,4 +170,23 @@ Para enriquecer a experiência visual além dos 3 gráficos nativos e limitados 
 * **Commit: Usuários por País** ✅
   * Adicionado gráfico de usuários por país com *slider* dinâmico baseado no contexto filtrado. O valor máximo do componente acompanha proporcionalmente a quantidade de países presentes no recorte atual.
 * **Commit: Heatmap de Conversão por Dispositivo** ✅
-  * Implementação de um gráfico de calor (*Heatmap*) via Plotly para analisar a conversão por tipo de dispositivo. A taxa de conversão é calculada com base na relação direta entre conversões e interações, exibida em formato percentual e com valores arredondados para facilitar a leitura dos insights.
+  * Implementação de um gráfico de calor (*Heatmap*) via Plotly para analisar a conversão por tipo de dispositivo. A taxa de conversão é calculada com base na relação direta entre conversões e interações, exibida em formato percentual e com valores arredondados.
+* **Commit: Funil de Conversão de Usuários** ✅
+  * Inclusão do gráfico de funil (Total → Interação → Conversão) utilizando o `df_filtrado`, exibindo de forma clara as taxas de engajamento e conversão final.
+* **Commit: Evolução de Usuários ao Longo do Tempo** ✅
+  * Adicionada visualização temporal para acompanhar o crescimento e a atividade da base de usuários ao longo do tempo.
+* **Commit: Gráfico de Gêneros por Plano (Barras Empilhadas)** ✅
+  * Adicionado gráfico de barras empilhadas correlacionando gênero e plano. 
+  * *Observação técnica:* Ao aplicar um filtro de plano específico no dashboard, o gráfico passa a representar apenas o plano selecionado. Para preservar a comparação macro entre os planos, o componente foi planejado para rodar utilizando o dataset completo ou permitindo seleção múltipla.
+* **Commit: Gráfico de Dispersão (Plotly)** ✅
+  * Adicionada a última visualização de dispersão utilizando os recursos avançados de interatividade do Plotly.
+
+---
+
+## 🚀 Dashboard Concluído & Deploy
+
+Após rodar os últimos testes locais, o painel foi validado e está operando perfeitamente de ponta a ponta, sem travamentos no Streamlit.
+
+O projeto está publicado oficialmente e pode ser acessado através do link abaixo:
+
+🔗 **[Acesse o Dashboard no Streamlit Cloud](https://projetointegradoradsgrupo38.streamlit.app/)**
