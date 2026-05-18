@@ -360,8 +360,28 @@ st.caption("Jornada dos usuários até a conversão.")
 
 st.divider()
 
-st.subheader("📊 Distribuição por Idade")
-grafico_idade = df_filtrado.groupby("age")["avg_listening_hours_per_week"].mean()
-st.bar_chart(grafico_idade)
+# ✅ Ajusta gráfico de idade para faixas etárias (bins)
+st.subheader("📊 Distribuição por Faixa Etária")
+
+df_temp = df_filtrado.copy()
+
+# Garantir que age é numérico (caso venha como string)
+df_temp["age"] = pd.to_numeric(df_temp["age"], errors="coerce")
+
+# Definição de faixas (bins) + rótulos
+bins = [0, 17, 24, 34, 44, 54, 64, 120]
+labels = ["0-17", "18-24", "25-34", "35-44", "45-54", "55-64", "65+"]
+
+# Criar coluna de faixa etária
+df_temp["faixa_etaria"] = pd.cut(df_temp["age"], bins=bins, labels=labels, right=True)
+
+# Média de horas semanais por faixa etária
+grafico_faixa = (
+    df_temp.groupby("faixa_etaria")["avg_listening_hours_per_week"]
+    .mean()
+    .dropna()
+)
+
+st.bar_chart(grafico_faixa)
 
 st.caption("✅ KPIs prontos.")
