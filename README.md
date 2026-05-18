@@ -102,84 +102,109 @@ A ideia inicial do dashboard é oferecer uma visão clara e estratégica do comp
 
 ## 📁 Estrutura do Projeto e Configuração Inicial
 
-O projeto foi estruturado para separar a camada de manipulação de dados (ETL) da camada de visualização (Dashboard):
+O projeto foi estruturado de forma modular para separar claramente a camada de manipulação de dados da camada de visualização:
 
-1. **Base de Dados:** Download da base de dados do Spotify realizada através do Kaggle. O arquivo original foi renomeado para `spotify.csv` e armazenado na pasta `data/`.
-2. **Dashboard:** Criação da pasta dedicada ao dashboard contendo o arquivo base do projeto (`app.py`).
+1. **📂 data/**: Armazena as bases de dados utilizadas no projeto.
+   * `spotify.csv`: Base de dados bruta baixada do Kaggle (massa de dados sintética).
+   * `spotify_tratado.csv`: Base de dados após o processo de limpeza e higienização.
+2. **📂 dashboard/**: Contém a estrutura do painel interativo.
+   * `app.py`: Código base e visualizações desenvolvidas em Python utilizando a biblioteca Streamlit.
+
+> 📊 **Planejamento Técnico:** Inicialmente planejado para plataformas *low-code* (Power BI / Looker Studio), o escopo evoluiu para o desenvolvimento de um painel dinâmico e customizado totalmente em **Streamlit (Python)**, centralizando a criação de KPIs e visualizações em código.
 
 ---
 
 ## ⚙️ Processo de ETL (Extração, Transformação e Carga)
 
-O processo de higienização e preparação dos dados foi documentado e executado em um arquivo Jupyter Notebook (`.ipynb`), ambiente ideal para a análise exploratória.
+A etapa de higienização, análise exploratória e preparação dos dados foi documentada e executada por meio de um arquivo Jupyter Notebook (`.ipynb`).
 
-### Passos Realizados:
-* **Exploração Inicial:** Verificação da estrutura do dataset, constatando o volume inicial de 5.000 linhas e 18 colunas.
-* **Validação de Duplicatas:** Checagem de linhas duplicadas (nenhuma ocorrência encontrada).
-* **Padronização Categórica:** Inspeção de consistência em strings (ex: checagem de grafias como *“Brazil, brazil ou brasil”*). Todas as categorias estavam devidamente padronizadas.
-* **Análise Numérica:** Verificação das colunas de dados inteiros para garantir o equilíbrio da distribuição, confirmando a ausência de *outliers* ou anomalias drásticas de ocorrência.
-* **Ajustes e Tipagem de Dados:**
-  * Conversão da coluna de data de `string` para `datetime`.
-  * Correção da coluna de inatividade (3 meses), que constava como `int`, mas documentada no Kaggle como valor booleano (`bool`).
-
-Ao final do tratamento, a base limpa foi exportada para a pasta `data/` com o nome de `spotify_tratado.csv`. O repositório conta atualmente com as duas versões:
-* `data/spotify.csv` (Base bruta)
-* `data/spotify_tratado.csv` (Base tratada)
+### 🔍 Etapas de Validação e Limpeza:
+* **Exploração Inicial:** Verificação estrutural do dataset, que conta com **50.000 linhas e 18 colunas**.
+* **Validação de Duplicatas:** Busca por registros duplicados na base (nenhuma ocorrência identificada).
+* **Padronização Categórica:** Inspeção de consistência textual nas variáveis categóricas (como checar e corrigir grafias inconsistentes do tipo *“Brazil, brazil ou brasil”*). Todas as categorias encontravam-se devidamente padronizadas.
+* **Análise Numérica:** Avaliação das colunas de dados inteiros para verificar o equilíbrio de distribuição das variáveis e mitigar a existência de *outliers* ou anomalias drásticas.
+* **Transformação de Tipos de Dados:**
+  * Conversão da coluna de data (que estava originalmente configurada como `string`) para o formato adequado de data e hora (`datetime`).
+  * Ajuste da coluna indicativa de inatividade (3 meses): estava tipada como número inteiro (`int`), porém foi convertida para valor booleano (`bool`), em conformidade com as especificações do Kaggle.
 
 ---
 
 ## 📊 Desenvolvimento do Dashboard & Streamlit
 
-O arquivo `dashboard/app.py` foi configurado para consumir diretamente a base tratada.
+O arquivo `dashboard/app.py` foi configurado para consumir de forma direta o arquivo final limpo (`data/spotify_tratado.csv`).
 
-### Validação Local
-* Execução do Streamlit localmente com carregamento bem-sucedido de 50.000 linhas e 18 colunas (validação de nomes e integridade das colunas). Tudo rodando de forma fluida.
-* **KPIs Principais:** Implementação e validação com sucesso dos indicadores de:
-  * Total de Usuários
-  * % de Assinantes Premium
-  * % de Inativos (3 meses)
-  * Média de Horas Semanais
-  * Skips (Pulos de música) por dia
-  * Taxa de Conversão de Anúncios
+### 💻 Validação Local
+O dashboard foi testado localmente carregando com sucesso a totalidade das 50.000 linhas e 18 colunas do dataset tratado. Todas as estruturas de dados foram lidas sem lentidão, rodando de forma fluida no Streamlit.
+
+**Métricas e KPIs Principais Implementados:**
+* 👥 Total de Usuários Únicos
+* 💎 % de Assinantes do Plano Premium
+* 💤 % de Usuários Inativos nos últimos 3 meses
+* ⏳ Média de Horas de Uso Semanais
+* ⏭️ Média de Skips (Pulos de música) por dia
+* 📈 Taxa de Conversão de Anúncios
 
 ---
 
 ## 🛠️ Tratamento de Erros & Refatoração (Edge Cases)
 
-Durante a evolução do layout, foram aplicadas correções importantes para prevenir quebras na interface (*Streamlit*):
+Durante a evolução do projeto, implementamos tratativas para mitigar falhas de interface e garantir uma navegação robusta:
 
-* **Tratamento de Filtro Vazio:** Evita que o DataFrame filtrado (`df_filtrado`) fique inteiramente vazio (caso ocorram valores `NaN` em `subscription_type` ou combinações exclusivas do usuário), impedindo que os KPIs e gráficos quebrem com exibição de `NaN`.
-* **Otimização do Gráfico de Idade:** Agrupamentos simples por idade (`groupby("age")`) geravam poluição visual com excesso de barras. O problema foi resolvido criando faixas etárias (*bins*).
-* **Consistência em Selectboxes:** Correção de listas de filtros desalinhadas ou contendo opções nulas (`NaN`), garantindo exibição ordenada e limpa.
+* **Tratamento de Filtro Vazio:** Adicionada uma lógica para prevenir cenários onde a aplicação de múltiplos filtros resulte em um DataFrame filtrado (`df_filtrado`) inteiramente vazio ou com valores `NaN`. Isso evita a exibição de erros na interface e mantém os KPIs íntegros.
+* **Otimização do Gráfico de Idade:** O agrupamento direto por idade (`groupby("age")`) gerava poluição visual no layout devido ao excesso de barras. O problema foi solucionado com a categorização dos dados em faixas etárias específicas (*bins*).
+* **Consistência em Filtros (Selectboxes):** Filtros laterais foram ajustados para remover valores nulos (`NaN`) e garantir listagens exibidas estritamente de forma ordenada.
 
 ---
 
-## 📈 Histórico de Commits & Novas Funcionalidades
+## 📦 Dependências
 
-Para enriquecer a experiência visual além dos 3 gráficos nativos e limitados do Streamlit, integramos a biblioteca **Plotly**, permitindo interações dinâmicas e análises visuais profundas.
+Para que o ambiente funcione corretamente (tanto localmente quanto no servidor em nuvem), o arquivo `requirements.txt` deve estar localizado na raiz do repositório.
 
-* **Distribuição de Assinaturas:** Adicionado gráfico focado na divisão dos tipos de plano.
-* **Filtro Lateral Dinâmico:** Implementação de filtro por tipo de assinatura integrado ao gráfico de idades.
+As principais bibliotecas utilizadas neste projeto são:
+* `streamlit` (Interface gráfica e estrutura do web app)
+* `pandas` (Manipulação, análise e tratamento de dados)
+* `plotly` (Biblioteca integrada para estender as capacidades nativas do Streamlit com gráficos interativos)
+
+---
+
+## ▶️ Como Executar o Projeto Localmente
+
+Caso queira clonar o repositório e executar a aplicação em sua máquina, siga os passos abaixo no terminal:
+
+1. **Instale as dependências do projeto:**
+   ```bash
+   pip install -r requirements.txt
+
+2. **Execute a aplicação do Streamlit:**
+   ```bash
+   streamlit run dashboard/app.py
+
+---
+
+## 📈 Histórico de Visualizações & Commits Principais
+
+* **Distribuição de Assinaturas:** Gráfico focado no rateio volumétrico dos tipos de plano.
+* **Filtro Lateral Dinâmico:** Integração do filtro de tipos de assinaturas interagindo diretamente com os dados de faixa etária.
 * **Commit: Usuários por País** ✅
-  * Adicionado gráfico de usuários por país com *slider* dinâmico baseado no contexto filtrado. O valor máximo do componente acompanha proporcionalmente a quantidade de países presentes no recorte atual.
+  * Inclusão do gráfico de distribuição geográfica com um componente de *slider* dinâmico. O valor máximo do seletor adapta-se automaticamente à quantidade de países presentes no recorte do filtro atual.
 * **Commit: Heatmap de Conversão por Dispositivo** ✅
-  * Implementação de um gráfico de calor (*Heatmap*) via Plotly para analisar a conversão por tipo de dispositivo. A taxa de conversão é calculada com base na relação direta entre conversões e interações, exibida em formato percentual e com valores arredondados.
+  * Gráfico de calor desenvolvido em Plotly relacionando interações e conversões por tipo de dispositivo, exibindo valores calculados em porcentagem e arredondados.
 * **Commit: Funil de Conversão de Usuários** ✅
-  * Inclusão do gráfico de funil (Total → Interação → Conversão) utilizando o `df_filtrado`, exibindo de forma clara as taxas de engajamento e conversão final.
-* **Commit: Evolução de Usuários ao Longo do Tempo** ✅
-  * Adicionada visualização temporal para acompanhar o crescimento e a atividade da base de usuários ao longo do tempo.
-* **Commit: Gráfico de Gêneros por Plano (Barras Empilhadas)** ✅
-  * Adicionado gráfico de barras empilhadas correlacionando gênero e plano. 
-  * *Observação técnica:* Ao aplicar um filtro de plano específico no dashboard, o gráfico passa a representar apenas o plano selecionado. Para preservar a comparação macro entre os planos, o componente foi planejado para rodar utilizando o dataset completo ou permitindo seleção múltipla.
+  * Implementação do fluxo de conversão (Total de Usuários → Interação → Conversão Final) com taxas de quebra calculadas dinamicamente com base nos filtros da página.
+* **Commit: Evolução Temporal de Usuários** ✅
+  * Gráfico de linha demonstrando a tendência de crescimento e novos cadastros ao longo do tempo.
+* **Commit: Gêneros por Plano (Barras Empilhadas)** ✅
+  * Criação do gráfico de barras empilhadas para análise de perfil demográfico por plano.
+  * *Nota de Engenharia:* Foi observado que ao aplicar o filtro lateral para um plano específico, o gráfico limitava-se a exibir apenas uma coluna. Para manter a comparação contextual de mercado, planejou-se o uso do dataset completo para este componente ou a adoção de seleção múltipla no filtro.
 * **Commit: Gráfico de Dispersão (Plotly)** ✅
-  * Adicionada a última visualização de dispersão utilizando os recursos avançados de interatividade do Plotly.
+  * Adição da última visualização analítica utilizando os eixos dinâmicos e *tooltips* interativos do Plotly.
 
 ---
 
-## 🚀 Dashboard Concluído & Deploy
+## 🚀 Painel Concluído & Deploy
 
-Após rodar os últimos testes locais, o painel foi validado e está operando perfeitamente de ponta a ponta, sem travamentos no Streamlit.
+Com os testes locais validados com sucesso e a aplicação operando perfeitamente de ponta a ponta, realizamos a publicação oficial do sistema.
 
-O projeto está publicado oficialmente e pode ser acessado através do link abaixo:
+O projeto está disponível publicamente através da plataforma Streamlit Cloud e pode ser acessado pelo link abaixo:
 
-🔗 **[Acesse o Dashboard no Streamlit Cloud](https://projetointegradoradsgrupo38.streamlit.app/)**
+🔗 **[Acesse o Dashboard Interativo do Spotify aqui](https://projetointegradoradsgrupo38.streamlit.app/)**
