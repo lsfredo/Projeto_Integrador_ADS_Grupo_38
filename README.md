@@ -100,13 +100,6 @@ A ideia inicial do dashboard é oferecer uma visão clara e estratégica do comp
 
 ---
 
-
-# Projeto Integrador - Análise de Dados do Spotify (Grupo 38)
-
-Este repositório contém o desenvolvimento do Projeto Integrador, focado na análise do comportamento dos usuários do Spotify, desde a extração e tratamento dos dados até a visualização em um dashboard interativo.
-
----
-
 ## 📁 Estrutura do Projeto e Configuração Inicial
 
 O projeto foi estruturado para separar a camada de manipulação de dados (ETL) da camada de visualização (Dashboard):
